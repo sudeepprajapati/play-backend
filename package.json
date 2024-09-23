@@ -2,14 +2,18 @@
   "name": "youtube-clone",
   "version": "1.0.0",
   "description": "a backend for youtube clone",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon src/index.js"
   },
   "keywords": [
     "javascript",
     "backend"
   ],
   "author": "Sudeep Prajapati",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
 }
