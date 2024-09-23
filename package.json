@@ -1,0 +1,15 @@
+{
+  "name": "youtube-clone",
+  "version": "1.0.0",
+  "description": "a backend for youtube clone",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "javascript",
+    "backend"
+  ],
+  "author": "Sudeep Prajapati",
+  "license": "ISC"
+}
