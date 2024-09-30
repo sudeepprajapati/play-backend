@@ -8,7 +8,7 @@ const registerUser = asyncHandler(
     async (req, res) => {
         // get user details from frontend
         const { fullname, email, username, password } = req.body
-        console.log("email: ", email);
+        // console.log("email: ", email);
 
         // Regex for fullname validation
         const fullNameRegex = /^[a-zA-Z]{2,}(?: [a-zA-Z]+){1,}$/;
@@ -34,23 +34,34 @@ const registerUser = asyncHandler(
             throw new ApiError(400, 'Please enter a valid email address (e.g., example@domain.com).');
         }
 
+        // Check if username is valid
+        const usernameRegex = /^[a-zA-Z0-9_]{3,15}$/;
+        if (!usernameRegex.test(username)) {
+            throw new ApiError(400, 'Username must be 3-15 characters long and can only contain letters, numbers, and underscores.');
+        }
+
         // Check if password is strong
         if (!strongPasswordRegex.test(password)) {
             throw new ApiError(400, 'Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character.');
         }
         // check if user already exits: username, email
 
-        const existedUser = User.findOne({
+        const existedUser = await User.findOne({
             $or: [{ username }, { email }]
         })
 
         if (existedUser) {
             throw new ApiError(409, "User with email or username already exist");
-
         }
+
         // check for images, check for avatar
         const avatarLocalPath = req.files?.avatar[0]?.path;
-        const coverImageLocalPath = req.files?.coverImage[0]?.path;
+        // const coverImageLocalPath = req.files?.coverImage[0]?.path;
+        let coverImageLocalPath;
+
+        if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+            coverImageLocalPath = req.files.coverImage[0].path
+        }
 
         if (!avatarLocalPath) {
             throw new ApiError(400, "Avatar file is required")
@@ -79,9 +90,8 @@ const registerUser = asyncHandler(
             "-password -refreshToken"
         )
         // check for user creation
-        if(!createdUser) {
+        if (!createdUser) {
             throw new ApiError(500, "Somthing went wrong while registering the user");
-            
         }
         // return response
         return res.status(201).json(
