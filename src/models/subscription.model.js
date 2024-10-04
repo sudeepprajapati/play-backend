@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model } from "mongoose";
 
 const subscriptionSchema = new Schema({
     Subscriber: {
@@ -11,4 +11,4 @@ const subscriptionSchema = new Schema({
     },
 }, { timestamps: true })
 
-const Subscription = model("Subscription", subscriptionSchema)
+export const Subscription = model("Subscription", subscriptionSchema)
